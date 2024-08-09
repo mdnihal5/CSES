@@ -1,24 +1,33 @@
 // Author : md_nihal
 // https://cses.fi/problemset/result/8649516/
-
+// https://cses.fi/problemset/result/10132363/
 #include<bits/stdc++.h>
 using namespace std;
-#define ll long long 
-const int mod=1e9+7;
-int main()
-{
-    int n,x; cin>>n>>x;
-    vector arr(n,0),dp(1e6+6,0);
+int MAX = 1e6 + 2;
+vector<int>dp (MAX, MAX);
+void __solve() {
 
-    for(int i=0;i<n;i++) {
-        cin>>arr[i];
-        dp[arr[i]]=1;
+    int n, sum; cin >> n >> sum;
+    vector<long long>a (n + 1);
+
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i]; dp[a[i]] = 1; // miniimum no of coins to make sum a[i] is 1
     }
-    for(int i=0;i<=x;i++){
-        for(int j=0;j<n;j++){
-            if(i-arr[j]>=0) dp[i]=(dp[i]+dp[i-arr[j]])%mod;
+
+    for (int w = 1; w <= sum; w++) {
+        for (int i = 1; i <= n; i++) {
+            if (w - a[i] >= 0) {
+                dp[w] = min (dp[w], dp[w - a[i]] + 1); // min no of coins to make target w using a[i]
+            }
         }
     }
-    cout<<dp[x]<<endl;
+
+    cout << (dp[sum] >= MAX ? -1 : dp[sum]);
+}
+
+int main() {
+    int T = 1; //cin >> T;
+
+    while (T--) __solve();
 }
 
